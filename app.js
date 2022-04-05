@@ -1,4 +1,5 @@
 //jshint esversion:6
+require('dotenv').config();
 const express = require("express");
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
@@ -24,8 +25,8 @@ const userSchema = new mongoose.Schema({
     password: String
 });
   
-const secret = "This is level 2 of encryption";
-userSchema.plugin(encrypt, { secret:secret, encryptedFields: ["password"] });
+
+userSchema.plugin(encrypt, { secret:process.env.SECRET, encryptedFields: ["password"] });
 
 const User = mongoose.model("User", userSchema);
   
@@ -68,7 +69,7 @@ app.post("/login",function(req,res){
         }else{
             if (foundUser) {
                 if (foundUser.password === password) {
-                    res.render("secrets");
+                    res.render("secret");
                };
             };
         };
